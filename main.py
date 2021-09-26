@@ -59,6 +59,12 @@ def bullet(x,y):
 
 
 #Asteroids
+
+draw_access_1 = True
+draw_access_2 = True
+draw_access_3 = True
+draw_access_4 = True
+draw_access_5 = True
 astro_x = 50
 astro_y = 50
 astro_y_1 = 200
@@ -157,11 +163,18 @@ while loop_run:
 
     #Display Asteroids constantly
     #atro move
-    astro_y += 0.7
-    astro_y_1 += 0.7
-    astro_y_2 += 0.7
-    astro_y_3 += 0.7
-    astro_y_4 += 0.7
+
+    if draw_access_1:
+        astro_y += 0.7
+    if draw_access_2:
+        astro_y_1 += 0.7
+    if draw_access_3:
+        astro_y_2 += 0.7
+    if draw_access_4:
+        astro_y_3 += 0.7
+    if draw_access_5:
+        astro_y_4 += 0.7
+
 
     #astro limitation
     if astro_y >= 650:
@@ -188,11 +201,16 @@ while loop_run:
     if astro_y_4 >=550 and astro_y_4 <= 551:
         life_value -= 5
 
-    asto(astrox1,astro_y)
-    asto(astrox2, astro_y_1)
-    asto(astrox3, astro_y_2)
-    asto(astrox4, astro_y_3)
-    asto(astrox5, astro_y_4)
+    if draw_access_1:
+        asto(astrox1,astro_y)
+    if draw_access_2:
+        asto(astrox2, astro_y_1)
+    if draw_access_3:
+        asto(astrox3, astro_y_2)
+    if draw_access_4:
+        asto(astrox4, astro_y_3)
+    if draw_access_5:
+        asto(astrox5, astro_y_4)
 
     #bullet move
     if bullet_state == True:
@@ -211,26 +229,31 @@ while loop_run:
     if bullet_x in astro_x_1:
         if bullet_y <= astro_y+64:
             astrox1 = -64
+            draw_access_1 = False
             score_value += 20
 
     if bullet_x in astro_x_2:
-        if bullet_y <= astro_y+64:
+        if bullet_y <= astro_y_1+64:
             astrox2 = -64
+            draw_access_2 = False
             score_value += 20
 
     if bullet_x in astro_x_3:
-        if bullet_y <= astro_y+64:
-            astrox3 = 964
+        if bullet_y <= astro_y_2+64:
+            astrox3 = -64
+            draw_access_3 = False
             score_value += 20
 
     if bullet_x in astro_x_4:
-        if bullet_y <= astro_y+64:
+        if bullet_y <= astro_y_3+64:
             astrox4 = -64
+            draw_access_4 = False
             score_value += 20
 
     if bullet_x in astro_x_5:
-        if bullet_y <= astro_y+64:
+        if bullet_y <= astro_y_4+64:
             astrox5 = -64
+            draw_access_5 = False
             score_value += 20
 
     show_score(score_x,score_y)
