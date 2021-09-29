@@ -17,12 +17,13 @@ background = pygame.image.load("galaxy.jpg")
 
 
 #background sound
-mixer.music.load("background.wav")
-mixer.music.play(-1)
+# mixer.music.load("background.wav")
+# mixer.music.play(-1)
 
 
 #setup font 
 font = pygame.font.Font('freesansbold.ttf',32)
+game_over_font = pygame.font.Font('freesansbold.ttf',64)
 
 #show score
 
@@ -33,6 +34,11 @@ score_value = 0
 def show_score(x,y):
     score = font.render("Score :"+str(score_value),True,(255,255,255))
     screen.blit(score,(x,y))
+
+
+
+
+
 
 #show life
 
@@ -93,6 +99,13 @@ playerImg = pygame.image.load("player.png")
 def player(player_x,player_y):
     screen.blit(playerImg,(player_x,player_y))
 
+#Game Over
+
+game_fail = False
+
+def game_over():
+    over = game_over_font.render("Game Over",True,(255,255,255))
+    screen.blit(over,(230,300))
 
 
 
@@ -121,6 +134,8 @@ while loop_run:
                 print("Down")
             #Bullet Fire
             if event.key == pygame.K_SPACE:
+                bullet_sound = mixer.Sound("shoot.wav")
+                bullet_sound.play()
                 bullet_x = player_x
                 bullet_y = player_y
                 bullet(bullet_x,bullet_y)
@@ -136,6 +151,8 @@ while loop_run:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_button = pygame.mouse.get_pressed()
             if mouse_button[0]:
+                bullet_sound = mixer.Sound("shoot.wav")
+                bullet_sound.play()
                 bullet_x = player_x
                 bullet_y = player_y
                 bullet(bullet_x, bullet_y)
@@ -163,20 +180,21 @@ while loop_run:
 
     #Display Asteroids constantly
     #atro move
-
-    if draw_access_1:
-        astro_y += 0.7
-    if draw_access_2:
-        astro_y_1 += 0.7
-    if draw_access_3:
-        astro_y_2 += 0.7
-    if draw_access_4:
-        astro_y_3 += 0.7
-    if draw_access_5:
-        astro_y_4 += 0.7
+    if game_fail == False:
+        if draw_access_1:
+            astro_y += 0.7
+        if draw_access_2:
+            astro_y_1 += 0.7
+        if draw_access_3:
+            astro_y_2 += 0.7
+        if draw_access_4:
+            astro_y_3 += 0.7
+        if draw_access_5:
+            astro_y_4 += 0.7
 
 
     #astro limitation
+    
     if astro_y >= 650:
         
         astro_y = 0
@@ -190,27 +208,30 @@ while loop_run:
         astro_y_4 = 0
 
     #space ship life decrease
-    if astro_y >= 550 and astro_y <= 551:
-        life_value -=5
-    if astro_y_1 >= 550 and astro_y_1 <= 551:
-        life_value -= 5
-    if astro_y_2 >=550 and astro_y_2 <= 551:
-        life_value -= 5
-    if astro_y_3 >=550 and astro_y_3 <= 551:
-        life_value -= 5
-    if astro_y_4 >=550 and astro_y_4 <= 551:
-        life_value -= 5
+    if game_fail == False:
+        if astro_y >= 550 and astro_y <= 551:
+            life_value -=20
+        if astro_y_1 >= 550 and astro_y_1 <= 551:
+            life_value -= 20
+        if astro_y_2 >=550 and astro_y_2 <= 551:
+            life_value -= 20
+        if astro_y_3 >=550 and astro_y_3 <= 551:
+            life_value -= 20
+        if astro_y_4 >=550 and astro_y_4 <= 551:
+            life_value -= 20
 
-    if draw_access_1:
-        asto(astrox1,astro_y)
-    if draw_access_2:
-        asto(astrox2, astro_y_1)
-    if draw_access_3:
-        asto(astrox3, astro_y_2)
-    if draw_access_4:
-        asto(astrox4, astro_y_3)
-    if draw_access_5:
-        asto(astrox5, astro_y_4)
+    #astro draw
+    if game_fail == False:
+        if draw_access_1:
+            asto(astrox1,astro_y)
+        if draw_access_2:
+            asto(astrox2, astro_y_1)
+        if draw_access_3:
+            asto(astrox3, astro_y_2)
+        if draw_access_4:
+            asto(astrox4, astro_y_3)
+        if draw_access_5:
+            asto(astrox5, astro_y_4)
 
     #bullet move
     if bullet_state == True:
@@ -258,6 +279,11 @@ while loop_run:
 
     show_score(score_x,score_y)
     show_life(life_x,life_y)
+
+    if life_value <= 0 :
+        life_value = 0
+        game_fail = True
+        game_over() 
 
     #print(f"X : {player_x}  Y : {player_y}")
     #Display Update
